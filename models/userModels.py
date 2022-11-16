@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from database.db import Base
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 class User(Base):
@@ -19,7 +19,7 @@ class User(Base):
         }
 
 class UserSchema(BaseModel):
-    email:str
+    email:EmailStr
     password:str
 
     class Config:
@@ -31,7 +31,7 @@ class UserSchema(BaseModel):
         }
 
 class ShowUser(BaseModel):
-    email:str
+    email:EmailStr
 
     class Config:
         orm_mode = True
