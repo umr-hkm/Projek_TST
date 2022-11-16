@@ -40,7 +40,6 @@ def sign_in(request, db: Session):
     access_token = create_access_token(user.email)
 
     return {"access_token": access_token, "token_type": "bearer"}
-    
 
     
 
