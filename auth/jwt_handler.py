@@ -15,12 +15,12 @@ def create_access_token(email: str) -> str:
         "expires": time.time() + 3600
     }
 
-    token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+    token = jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORTIM)
     return token
     
 async def verify_access_token(token: str) -> dict:
     try:
-        data = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+        data = jwt.decode(token, settings.SECRET_KEY, algorithms=settings.ALGORTIM)
         email:str = data.get("email")
         expire = data.get("expires")
 
