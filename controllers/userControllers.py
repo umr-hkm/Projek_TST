@@ -16,6 +16,12 @@ def sign_up(request: UserSchema, db: Session):
             detail="Email sudah digunakan."
         )
 
+    if len(request.password) < 8:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Password setidaknya memiliki 8 karakter."
+        )
+
     hashed_password = HashPassword().create_hash(request.password)
     new_user = User(email=request.email, nama=request.nama,
                     password=hashed_password)

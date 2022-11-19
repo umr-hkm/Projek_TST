@@ -16,7 +16,7 @@ question_router = APIRouter(
 
 @question_router.post("/create")
 def create_a_question(request: QuestionSchema, db: Session = Depends(get_db), user: str = Depends(authenticate)) -> dict:
-    return questionControllers.create_quesiton(request, db)
+    return questionControllers.create_quesiton(request, db, user)
 
 
 @question_router.get("/", response_model=List[QuestionShow])
@@ -31,9 +31,9 @@ def get_a_question(id: int, db: Session = Depends(get_db), user: str = Depends(a
 
 @question_router.put("/update/{id}")
 def update_a_question(id: int, request: QuestionUpdate, db: Session = Depends(get_db), user: str = Depends(authenticate)) -> dict:
-    return questionControllers.update_question(id, request, db)
+    return questionControllers.update_question(id, request, db, user)
 
 
 @question_router.delete("/delete/{id}")
 def delete_a_question(id: int, db: Session = Depends(get_db), user: str = Depends(authenticate)) -> dict:
-    return questionControllers.delete_question(id, db)
+    return questionControllers.delete_question(id, db, user)

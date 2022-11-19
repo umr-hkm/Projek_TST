@@ -3,7 +3,13 @@ from models.questionModels import QuestionSchema, Question, QuestionUpdate
 from fastapi import HTTPException, status
 
 
-def create_quesiton(request: QuestionSchema, db: Session):
+def create_quesiton(request: QuestionSchema, db: Session, user:str):
+    if (user != "admin@gmail.com"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Fitur ini hanya dapat digunakan oleh admin."
+        )
+
     masalah = db.query(Question).filter(Question.masalah == request.masalah)
 
     if masalah.first():
@@ -38,7 +44,13 @@ def get_question(id: int, db: Session):
     return masalah.first()
 
 
-def update_question(id: int, request: QuestionUpdate, db: Session):
+def update_question(id: int, request: QuestionUpdate, db: Session, user:str):
+    if (user != "admin@gmail.com"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Fitur ini hanya dapat digunakan oleh admin."
+        )
+
     masalah = db.query(Question).filter(Question.id == id)
 
     if not masalah.first():
@@ -55,7 +67,13 @@ def update_question(id: int, request: QuestionUpdate, db: Session):
     }
 
 
-def delete_question(id: int, db: Session):
+def delete_question(id: int, db: Session, user:str):
+    if (user != "admin@gmail.com"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Fitur ini hanya dapat digunakan oleh admin."
+        )
+
     masalah = db.query(Question).filter(Question.id == id)
 
     if not masalah.first():
