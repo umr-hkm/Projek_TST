@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String
 from database.db import Base
 from pydantic import BaseModel
 
+
 class Question(Base):
     __tablename__ = 'questions'
 
@@ -17,9 +18,10 @@ class Question(Base):
             }
         }
 
+
 class QuestionSchema(BaseModel):
-    masalah:str
-    pilihan:str
+    masalah: str
+    pilihan: str
 
     class Config:
         orm_mode = True
@@ -29,24 +31,26 @@ class QuestionSchema(BaseModel):
                 "pilihan": "0 (Tidak Pernah), 1 (Beberapa Hari), 2 (Lebih Dari 1 Minggu), 3 (Hampir Setiap Hari)"
             }
         }
+
 
 class QuestionShow(BaseModel):
-    id:int
-    masalah:str
-    pilihan:str
+    id: int
+    masalah: str
+    pilihan: str
 
     class Config:
         orm_mode = True
         schema_extra = {
             "example": {
-                "int" : 1,
+                "int": 1,
                 "masalah": "Kurang berminat atau bergairah dalam melakukan apapun",
                 "pilihan": "0 (Tidak Pernah), 1 (Beberapa Hari), 2 (Lebih Dari 1 Minggu), 3 (Hampir Setiap Hari)"
             }
         }
 
+
 class QuestionUpdate(BaseModel):
-    masalah:str
+    masalah: str
 
     class Config:
         orm_mode = True

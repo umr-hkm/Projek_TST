@@ -3,6 +3,7 @@ from database.db import Base
 from pydantic import BaseModel, EmailStr, conint
 from typing import Optional
 
+
 class User(Base):
     __tablename__ = 'users'
 
@@ -17,29 +18,31 @@ class User(Base):
         schema_extra = {
             "Contoh": {
                 "email": "contoh123@mailmail.com",
-                "nama" : "Agus",
+                "nama": "Agus",
                 "password": "ashiapp!!",
             }
         }
 
 
 class UserSchema(BaseModel):
-    email:EmailStr
-    nama:str
-    password:str
+    email: EmailStr
+    nama: str
+    password: str
 
     class Config:
+        orm_mode = True
         schema_extra = {
             "example": {
                 "email": "contoh123@mailmail.com",
-                "nama" : "Agus",
+                "nama": "Agus",
                 "password": "ashiapp!!",
             }
         }
 
+
 class ShowUser(BaseModel):
-    email:EmailStr
-    nama:str
+    email: EmailStr
+    nama: str
     diagnosis: str
     severity: str
 
@@ -48,7 +51,7 @@ class ShowUser(BaseModel):
         schema_extra = {
             "example": {
                 "email": "contoh123@mailmail.com",
-                "nama" : "Agus",
+                "nama": "Agus",
                 "diagnosis": "Major Depressive Disorder",
                 "severity": "Severe"
             }
@@ -65,22 +68,20 @@ class TokenData(BaseModel):
 
 
 class AnswerSchema(BaseModel):
-    email: EmailStr
-    jawaban_masalah_1: conint(gt = -1, lt =4)
-    jawaban_masalah_2: conint(gt = -1, lt =4)
-    jawaban_masalah_3: conint(gt = -1, lt =4)
-    jawaban_masalah_4: conint(gt = -1, lt =4)
-    jawaban_masalah_5: conint(gt = -1, lt =4)
-    jawaban_masalah_6: conint(gt = -1, lt =4)
-    jawaban_masalah_7: conint(gt = -1, lt =4)
-    jawaban_masalah_8: conint(gt = -1, lt =4)
-    jawaban_masalah_9: conint(gt = -1, lt =4)
+    jawaban_masalah_1: conint(gt=-1, lt=4)
+    jawaban_masalah_2: conint(gt=-1, lt=4)
+    jawaban_masalah_3: conint(gt=-1, lt=4)
+    jawaban_masalah_4: conint(gt=-1, lt=4)
+    jawaban_masalah_5: conint(gt=-1, lt=4)
+    jawaban_masalah_6: conint(gt=-1, lt=4)
+    jawaban_masalah_7: conint(gt=-1, lt=4)
+    jawaban_masalah_8: conint(gt=-1, lt=4)
+    jawaban_masalah_9: conint(gt=-1, lt=4)
 
     class Config:
         orm_mode = True
         schema_extra = {
             "example": {
-                "email" : "contoh123@mailmail.com",
                 "jawaban_masalah_1": 0,
                 "jawaban_masalah_2": 1,
                 "jawaban_masalah_3": 0,
@@ -92,4 +93,4 @@ class AnswerSchema(BaseModel):
                 "jawaban_masalah_9": 2
 
             }
-        } 
+        }

@@ -62,22 +62,16 @@ def get_user(id: int, db: Session):
     return user
 
 
-def analysis_health_condition(request: AnswerSchema, db: Session):
-    user = db.query(User).filter(User.email == request.email)
-
-    if not user.first():
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User dengan email tersebut tidak ditemukan."
-        )
+def analysis_health_condition(request: AnswerSchema, db: Session, user: str):
+    update_user = db.query(User).filter(User.email == user)
 
     kumpulan_jawaban = [request.jawaban_masalah_1, request.jawaban_masalah_2, request.jawaban_masalah_3, request.jawaban_masalah_4,
-               request.jawaban_masalah_5, request.jawaban_masalah_6, request.jawaban_masalah_7, request.jawaban_masalah_8, request.jawaban_masalah_9]
+                        request.jawaban_masalah_5, request.jawaban_masalah_6, request.jawaban_masalah_7, request.jawaban_masalah_8, request.jawaban_masalah_9]
 
     jumlah_skor = 0
-    
+
     for jawaban in kumpulan_jawaban:
-        jumlah_skor +=  jawaban
+        jumlah_skor += jawaban
 
     jumlah_true = 0
 
@@ -94,10 +88,10 @@ def analysis_health_condition(request: AnswerSchema, db: Session):
                 jumlah_true += 1
             else:
                 kumpulan_jawaban[i] = False
-    
+
     cekJawabanQ1Q2 = kumpulan_jawaban[0] or kumpulan_jawaban[1]
 
-    #Diagnosa
+    # Diagnosa
     if (jumlah_true >= 5 and cekJawabanQ1Q2):
         diagnosis = "Major Depressive Disorder"
     elif (2 <= jumlah_true <= 4 and cekJawabanQ1Q2):
@@ -105,7 +99,7 @@ def analysis_health_condition(request: AnswerSchema, db: Session):
     else:
         diagnosis = "Normal"
 
-    #Tingkat Keparahan
+    # Tingkat Keparahan
     if (jumlah_skor <= 4):
         severity = "None"
     elif (5 <= jumlah_skor <= 9):
@@ -117,9 +111,9 @@ def analysis_health_condition(request: AnswerSchema, db: Session):
     else:
         severity = "Severe"
 
-    user.update({'diagnosis': diagnosis})
-    user.update({'severity':severity})
+    update_user.update({'diagnosis': diagnosis})
+    update_user.update({'severity': severity})
 
     db.commit()
 
-    return {"diagnosis": diagnosis, "severity":severity}
+    return {"diagnosis": diagnosis, "severity": severity}

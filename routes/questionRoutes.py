@@ -13,22 +13,27 @@ question_router = APIRouter(
     tags=["Question"],
 )
 
+
 @question_router.post("/create")
-def create_a_question(request: QuestionSchema, db : Session = Depends(get_db), user: UserSchema = Depends(authenticate)) -> dict:
+def create_a_question(request: QuestionSchema, db: Session = Depends(get_db), user: str = Depends(authenticate)) -> dict:
     return questionControllers.create_quesiton(request, db)
 
+
 @question_router.get("/", response_model=List[QuestionShow])
-def get_all_questions(db : Session = Depends(get_db), user: UserSchema = Depends(authenticate)) -> dict:
+def get_all_questions(db: Session = Depends(get_db), user: str = Depends(authenticate)) -> dict:
     return questionControllers.get_questions(db)
 
+
 @question_router.get("/{id}", response_model=QuestionShow)
-def get_a_question(id: int, db : Session = Depends(get_db), user: UserSchema = Depends(authenticate)) -> dict:
+def get_a_question(id: int, db: Session = Depends(get_db), user: str = Depends(authenticate)) -> dict:
     return questionControllers.get_question(id, db)
 
+
 @question_router.put("/update/{id}")
-def update_a_question(id: int, request: QuestionUpdate, db : Session = Depends(get_db), user: UserSchema = Depends(authenticate)) -> dict:
+def update_a_question(id: int, request: QuestionUpdate, db: Session = Depends(get_db), user: str = Depends(authenticate)) -> dict:
     return questionControllers.update_question(id, request, db)
 
+
 @question_router.delete("/delete/{id}")
-def delete_a_question(id: int, db : Session = Depends(get_db), user: UserSchema = Depends(authenticate)) -> dict:
+def delete_a_question(id: int, db: Session = Depends(get_db), user: str = Depends(authenticate)) -> dict:
     return questionControllers.delete_question(id, db)

@@ -4,10 +4,11 @@ from datetime import datetime, timedelta
 from database.db import Settings
 from fastapi import HTTPException, status
 from jose import jwt, JWTError
-from models.userModels import User, TokenData
+from models.userModels import TokenData
 
 
 settings = Settings()
+
 
 def create_access_token(email: str) -> str:
     payload = {
@@ -15,13 +16,16 @@ def create_access_token(email: str) -> str:
         "expires": time.time() + 3600
     }
 
-    token = jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORTIM)
+    token = jwt.encode(payload, settings.SECRET_KEY,
+                       algorithm=settings.ALGORTIM)
     return token
-    
+
+
 async def verify_access_token(token: str) -> dict:
     try:
-        data = jwt.decode(token, settings.SECRET_KEY, algorithms=settings.ALGORTIM)
-        email:str = data.get("email")
+        data = jwt.decode(token, settings.SECRET_KEY,
+                          algorithms=settings.ALGORTIM)
+        email: str = data.get("email")
         expire = data.get("expires")
 
         if expire is None:
@@ -38,10 +42,10 @@ async def verify_access_token(token: str) -> dict:
         if email is None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Token tidak valid2!"
+                detail="Token tidak valid!"
             )
 
-        token_data = TokenData(email = email)
+        return data
 
     except JWTError:
         raise HTTPException(
