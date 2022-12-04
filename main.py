@@ -5,7 +5,20 @@ from models import userModels, questionModels
 from routes.userRoutes import user_router
 from routes.questionRoutes import question_router
 
+from fastapi.middleware.cors import CORSMiddleware
+
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=False,
+    allow_methods=['*'],
+    allow_headers=['*'],
+)
+
+
 app.debug  = True
 
 userModels.Base.metadata.create_all(engine)
