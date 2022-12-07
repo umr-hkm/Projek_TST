@@ -1,12 +1,9 @@
 from sqlalchemy.orm import Session
-from datetime import datetime, timedelta
 from models.userModels import User, UserSchema, AnswerSchema
 from fastapi import HTTPException, status
 from auth.hash_password import HashPassword
 from auth.jwt_handler import create_access_token
-from pydantic import EmailStr
-import requests
-
+import requests,json
 
 def sign_up(request: UserSchema, db: Session):
     user = db.query(User).filter(User.email == request.email).first()
@@ -80,6 +77,7 @@ def get_partner_users():
 
 def analysis_health_condition(request: AnswerSchema, db: Session, user: str):
     update_user = db.query(User).filter(User.email == user)
+    user_data = update_user.first()
 
     kumpulan_jawaban = [request.jawaban_masalah_1, request.jawaban_masalah_2, request.jawaban_masalah_3, request.jawaban_masalah_4,
                         request.jawaban_masalah_5, request.jawaban_masalah_6, request.jawaban_masalah_7, request.jawaban_masalah_8, request.jawaban_masalah_9]
@@ -127,15 +125,74 @@ def analysis_health_condition(request: AnswerSchema, db: Session, user: str):
     else:
         severity = "Severe"
 
+    
+
+    list_partner_user = get_partner_users()
+    list_all_mbti = []
+    
+    for user in list_partner_user:
+        list_all_mbti.append(user["MBTI"])
+
+    list_mbti = ["ESTJ", "ESTP", "ESFP", "ESFJ", "ISTJ", "ISTP", 
+        "ISFP", "ISFJ","INTJ", "INTP", "INFP", "INFJ", "ENTJ", "ENTP","ENFP", "ENFJ"]
+    
+    list_mbti_counter = [0 for i in range(16)]
+
+    for i in range(16):
+        mbti = list_mbti[i]
+        for personality in list_all_mbti:
+            if personality == mbti:
+                list_mbti_counter[i] += 1
+    
+    nama = user_data.nama
+    email = user_data.email
+    
+    list_huruf = ["i","e","s","n","t","f","j","p"]
+
+    letter_counter = [0 for i in range(8)]
+
+    for i in range(8):
+        checker = list_huruf[i]
+        for huruf in nama:
+            if huruf == checker:
+                letter_counter[i] += 1
+        for huruf in email:
+            if huruf == checker:
+                letter_counter[i] += 1
+        for huruf in severity:
+            if huruf == checker:
+                letter_counter[i] += 1
+        for huruf in diagnosis:
+            if huruf == checker:
+                letter_counter[i] += 1
+
+    idx = 0
+    personality = ""
+
+    while (idx < 8):
+        if (letter_counter[idx] > letter_counter[idx+1]):
+            personality += list_huruf[idx]
+        else:
+            personality += list_huruf[idx+1]
+        idx += 2
+
+    personality = personality.upper()
+
+    counter = 0
+    for mbti in list_all_mbti:
+        if personality == mbti:
+            counter += 1
+    
+    accuracy = (counter//len(list_all_mbti)) * 100
+
+    accuracy = ' (Akurasi: ' + str(accuracy) + '%)'
+
+    personality = personality + accuracy
+
     update_user.update({'diagnosis': diagnosis})
     update_user.update({'severity': severity})
-
-    # list_partner_user = get_partner_users()
-    # list_mbti = []
-    
-    # for user in list_partner_user:
-    #     list_mbti.append(user["MBTI_type"])
+    update_user.update({'personality': (personality)})
 
     db.commit()
 
-    return {"diagnosis": diagnosis, "severity": severity}
+    return {"diagnosis": diagnosis, "severity": severity, "personality" : personality}

@@ -16,7 +16,7 @@ from typing import Any, Generator
 from routes.questionRoutes import question_router
 from routes.userRoutes import user_router
 from sqlalchemy.orm import Session
-from tests.users import authentication_token_from_email
+from tests.auth import authentication_token_from_email
 
 def start_application():
     app = FastAPI()

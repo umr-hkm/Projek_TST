@@ -13,6 +13,7 @@ class User(Base):
     password = Column(String)
     diagnosis = Column(String, default="")
     severity = Column(String, default="")
+    personality = Column(String, default="")
 
     class Config:
         schema_extra = {
@@ -45,6 +46,7 @@ class ShowUser(BaseModel):
     nama: str
     diagnosis: str
     severity: str
+    personality: str
 
     class Config:
         orm_mode = True
@@ -53,7 +55,8 @@ class ShowUser(BaseModel):
                 "email": "contoh123@mailmail.com",
                 "nama": "Agus",
                 "diagnosis": "Major Depressive Disorder",
-                "severity": "Severe"
+                "severity": "Severe",
+                "personality" : "ENFP"
             }
         }
 
