@@ -35,6 +35,6 @@ def get_a_user(id: int, db: Session = Depends(get_db), user: str = Depends(authe
     return userControllers.get_user(id, db)
 
 
-@user_router.put("/core/get-mental-health-condition")
-def analyze_my_mental_health_condition(request: AnswerSchema, db: Session = Depends(get_db), user: str = Depends(authenticate)) -> dict:
+@user_router.put("/mental-health-condition-and-personality-prediction")
+def analyze_my_mental_health_condition_and_predict_my_personality(request: AnswerSchema, db: Session = Depends(get_db), user: str = Depends(authenticate)) -> dict:
     return userControllers.analysis_health_condition(request, db, user)

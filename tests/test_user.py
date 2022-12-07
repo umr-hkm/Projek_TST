@@ -33,7 +33,7 @@ def test_get_user_health_condition(client, normal_user_token_headers):
         "jawaban_masalah_9": 2
     }
 
-    response = client.put("/users/core/get-mental-health-condition", json=payload,headers=normal_user_token_headers)
+    response = client.put("/users/mental-health-condition-and-personality-prediction", json=payload,headers=normal_user_token_headers)
     assert response.json()['diagnosis'] == 'Normal'
     assert response.json()['severity'] == 'Mild'
     assert response.status_code == 200

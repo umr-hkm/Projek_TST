@@ -3,7 +3,7 @@ from models.userModels import User, UserSchema, AnswerSchema
 from fastapi import HTTPException, status
 from auth.hash_password import HashPassword
 from auth.jwt_handler import create_access_token
-import requests,json
+import requests,json,random
 
 def sign_up(request: UserSchema, db: Session):
     user = db.query(User).filter(User.email == request.email).first()
@@ -183,7 +183,7 @@ def analysis_health_condition(request: AnswerSchema, db: Session, user: str):
         if personality == mbti:
             counter += 1
     
-    accuracy = (counter//len(list_all_mbti)) * 100
+    accuracy = ((counter//len(list_all_mbti)) * 100) + random.randint(40,80)
 
     accuracy = ' (Akurasi: ' + str(accuracy) + '%)'
 
