@@ -66,12 +66,12 @@ def get_user(id: int, db: Session):
     return user
 
 def partner_authentication():
-    signin = requests.post("https://adiprojectmbti.kindwater-64b24f20.eastus.azurecontainerapps.io/users/signin",
+    signin = requests.post("https://personalitymbti.kindwater-64b24f20.eastus.azurecontainerapps.io/users/signin",
         data={"username":"umar@gmail.com", "password":'password'})
     return signin.json()["access_token"]
 
 def get_partner_users():
-    get_all_user = requests.get("https://adiprojectmbti.kindwater-64b24f20.eastus.azurecontainerapps.io/users/",
+    get_all_user = requests.get("https://personalitymbti.kindwater-64b24f20.eastus.azurecontainerapps.io/users/",
         headers={'Authorization': 'Bearer ' + partner_authentication()})
     return(get_all_user.json())
 
