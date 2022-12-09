@@ -56,7 +56,7 @@ class ShowUser(BaseModel):
                 "nama": "Agus",
                 "diagnosis": "Major Depressive Disorder",
                 "severity": "Severe",
-                "personality" : "ENFP"
+                "personality" : "ENFP (Akurasi: 90%)"
             }
         }
 
